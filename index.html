@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Smart Popup</title>
+  <script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>
+  <script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+  <style media="screen">
+    /* MODAL BOX (POPUP) */
+    .overlay {
+      z-index: 9999;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.5);
+      transition: opacity 200ms;
+      visibility: hidden;
+      opacity: 0;
+    }
+
+    .overlay.light {
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    .overlay .cancel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      cursor: default;
+    }
+
+    .overlay:target {
+      visibility: visible;
+      opacity: 1;
+    }
+
+    .popup {
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+      margin: 75px auto;
+      padding: 20px;
+      background: #fff;
+      border: 1px solid #666;
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+      position: relative;
+      max-width: 60%;
+    }
+
+    .light .popup {
+      border-color: #aaa;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    }
+
+    .popup .content {
+      /* for iframe */
+      position: relative;
+      padding-bottom: 56.25%;
+      /* 16:9 */
+      padding-top: 25px;
+      height: 0;
+    }
+
+    .popup h2 {
+      margin-top: 0;
+      color: #666;
+      font-family: "Trebuchet MS", Tahoma, Arial, sans-serif;
+    }
+
+    .popup iframe,
+    .popup video {
+      /* for iframe */
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .popup .popup-close {
+      position: absolute;
+      /*width: 20px;
+      height: 20px;*/
+      top: 20px;
+      right: 20px;
+    }
+
+    .popup .close {
+      opacity: 0.8;
+      transition: all 200ms;
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+      color: #666;
+    }
+
+    .popup .timer {
+      font-size: 12px;
+      font-weight: normal;
+      text-decoration: none;
+      color: #666;
+    }
+
+    .popup .close:hover {
+      opacity: 1;
+    }
+    /* şuan pasif
+      .popup .close.disabled {
+      -webkit-filter: grayscale(1);
+      -moz-filter: grayscale(1);
+      filter: grayscale(1);
+      pointer-events: none;
+      cursor: default;
+    }*/
+    /* MODAL BOX (POPUP) END */
+  </style>
+</head>
+
+<body>
+  <!-- POPUP -->
+  <div id="popupDuyuru" class="overlay">
+    <div class="popup">
+      <h2>Duyuru</h2>
+      <span class="popup-close">
+               <span class="timer"></span>
+      <a class="close" href="#">&times;</a>
+      </span>
+      <div class="content">
+        <!--<img class="img-responsive" src="http://placehold.it/800x600?text=Görsel+Bekleniyor" />-->
+        <iframe src="https://www.youtube.com/watch?v=fJ9rUzIMcZQ" frameborder="0" allowfullscreen></iframe>
+        <video width="400" controls="controls">
+          <source src="#" type="video/mp4" />
+          <source src="#" type="video/ogg" /> Your browser does not support the <code>video</code> element.
+        </video>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function() {
+      $(".popup .close").css("display", "none");
+      //tek seferde açılması için, hepsini aç
+      //if (localStorage.getItem('popState') != 'shown') {
+      //$j("#popup").delay(2000).fadeIn();
+      window.location.hash = 'popupDuyuru';
+      //$(".popup video").attr("autoplay", "autoplay");
+      //localStorage.setItem('popState', 'shown')
+      return false;
+      //}
+    });
+    var count = 6; //geri sayım sayısı
+    var counter = setInterval(timer, 1000);
+    $(".timer").text(count + " secs left");
+
+    function timer() {
+      count = count - 1;
+      if (count <= 0) {
+        //geri sayım bittiği zaman
+        clearInterval(counter);
+        $(".popup .close").css("display", "block");
+        $(".timer").text("");
+        return;
+      }
+      $(".timer").text(count + " secs left");
+    }
+    setTimeout(function() {
+      //disabled kaldırma, linkte disabled olmalı
+      //$(".popup .close").removeClass("disabled");
+    }, count * 1000);
+  </script>
+  <!-- POPUP ENDS -->
+</body>
+
+</html>
